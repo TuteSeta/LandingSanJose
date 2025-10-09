@@ -62,7 +62,6 @@ export default function NavBar({ items = [], activeIndex = 0, onHoverStart, onHo
         <ul
           className={[
             "mx-auto max-w-7xl px-3 py-2 flex gap-2 overflow-x-auto snap-x",
-            // esconder scrollbar sin plugin
             "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
           ].join(" ")}
         >
@@ -77,7 +76,6 @@ export default function NavBar({ items = [], activeIndex = 0, onHoverStart, onHo
                     "inline-flex items-center rounded-2xl px-4 py-2.5 text-[15px] font-semibold",
                     "transition-transform duration-200 ease-out will-change-transform",
                     "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]",
-                    // pills sin borde: un leve ring transparente y shadow suave
                     active
                       ? "bg-gradient-to-br from-[#CBE9F7] to-[#B5E2F8] text-[#005b87] shadow-md scale-105"
                       : "bg-white/80 text-[#0f2940] ring-1 ring-black/5 shadow-sm hover:scale-[1.04] hover:bg-white"

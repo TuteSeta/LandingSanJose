@@ -7,10 +7,10 @@ export default function Hero() {
   // Mapeo único de ítems ⇄ secciones de la cancha (fuente de verdad)
   const items = useMemo(
     () => [
-      { label: "Noticias", part: "leftKey", href: "#noticias" },
-      { label: "Plantel", part: "center", href: "#plantel" },
-      { label: "Historia", part: "halfCourt", href: "#historia" },
-      { label: "Contacto", part: "rightKey", href: "#contacto" },
+      { label: "Noticias", part: "leftKey", href: "/noticias" },
+      { label: "Plantel", part: "center", href: "/plantel" },
+      { label: "Historia", part: "halfCourt", href: "/historia" },
+      { label: "Contacto", part: "rightKey", href: "/contacto" },
     ],
     []
   );
