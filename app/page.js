@@ -1,8 +1,8 @@
-import Image from "next/image";
-
+import Hero from "./components/Hero.jsx";
 export default function Home() {
   return (
-    <div className="">
+    <div className="min-h-dvh bg-[#0b1020]">
+      <Hero></Hero>
     </div>
   );
 }
