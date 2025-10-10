@@ -1,23 +1,59 @@
 'use client';
 
-import { Mail, Phone, MapPin, Instagram, Send, ArrowUpRight } from "lucide-react";
+import { useState } from 'react';
+import { Mail, Phone, MapPin, Instagram, Send, ArrowUpRight, CheckCircle2, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function Contacto() {
-  return (
-    <section className="relative  w-full bg-[#0b1222] text-slate-200 overflow-hidden">
-      {/* radial spotlight */}
-      <div className="pointer-events-none absolute -top-32 left-1/2 h-[60rem] w-[60rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,0.18),rgba(34,197,94,0.12)_40%,transparent_70%)] blur-3xl" />
+const FORMSPREE_URL = "https://formspree.io/f/xldppgbb"; 
 
-      {/* subtle circuit corners */}
+export default function Contacto() {
+  const [status, setStatus] = useState("idle"); 
+  const [msg, setMsg] = useState("");
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    setStatus("sending");
+    setMsg("");
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const r = await fetch(FORMSPREE_URL, {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      });
+
+      if (r.ok) {
+        setStatus("ok");
+        setMsg("¡Gracias! Tu mensaje fue enviado.");
+        form.reset();
+      } else {
+        const j = await r.json().catch(() => ({}));
+        setStatus("err");
+        setMsg(j?.errors?.[0]?.message || "Hubo un problema enviando el mensaje.");
+      }
+    } catch {
+      setStatus("err");
+      setMsg("No se pudo contactar con el servidor de formularios.");
+    }
+  }
+
+  return (
+    <section className="relative w-full bg-transparent text-[#27303F] overflow-hidden">
+      {/* radial fondo fijo para que no se corte */}
+      <div className="pointer-events-none fixed -top-60 left-1/2 h-[100rem] w-[100rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(0,174,239,0.20),rgba(0,43,91,0.10)_45%,transparent_75%)] blur-3xl" />
+
+      {/* corners decorativos */}
       <div className="pointer-events-none absolute inset-0 opacity-40">
-        <div className="absolute left-4 top-8 h-16 w-40 rounded-xl border border-slate-800/60" />
-        <div className="absolute right-6 bottom-12 h-16 w-40 rounded-xl border border-slate-800/60" />
+        <div className="absolute left-4 top-8 h-16 w-40 rounded-xl border border-[#E6EEF2]" />
+        <div className="absolute right-6 bottom-12 h-16 w-40 rounded-xl border border-[#E6EEF2]" />
       </div>
 
       {/* BACK TITLE */}
       <div className="absolute inset-x-0 top-10 flex justify-center select-none opacity-5">
-        <h1 className="text-[13rem] font-extrabold tracking-widest leading-none">CONTACTO</h1>
+        <h1 className="text-[13rem] font-extrabold tracking-widest leading-none text-[#002B5B]">CONTACTO</h1>
       </div>
 
       <div className="relative mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 px-6 py-20 md:grid-cols-2 md:px-10">
@@ -28,31 +64,26 @@ export default function Contacto() {
           transition={{ duration: 0.6 }}
           className="space-y-6"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/40 px-3 py-1 text-sm shadow">
-            <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
-            Contacto
-          </div>
-
-          <h2 className="text-4xl font-semibold tracking-tight">Ponete en contacto</h2>
-          <p className="max-w-md text-slate-400">
-            ¿Querés sumarte a entrenar, jugar amistosos, o tenés dudas sobre inscripciones? Escribinos y el Club de Basket <span className="text-slate-200 font-medium">San José</span> te responde a la brevedad.
+          <h2 className="text-4xl font-semibold tracking-tight text-[#002B5B]">Ponete en contacto</h2>
+          <p className="max-w-md">
+            ¿Querés sumarte a entrenar, jugar amistosos, o tenés dudas sobre inscripciones? Escribinos y el Club de Basket <span className="text-[#006C9E] font-medium">San José</span> te responde a la brevedad.
           </p>
 
           <div className="space-y-4">
-            <ContactCard icon={<Mail className="h-5 w-5" />} title="Email" value="contacto@sanjosebasket.com" href="mailto:contacto@sanjosebasket.com" />
-            <ContactCard icon={<Phone className="h-5 w-5" />} title="Teléfono" value="(261) 555-0198" href="tel:+542615550198" />
-            <ContactCard icon={<MapPin className="h-5 w-5" />} title="Ubicación" value="Gimnasio San José, Mendoza, AR" href="https://maps.google.com/?q=Gimnasio+San+Jose+Mendoza" />
-            <ContactCard icon={<Instagram className="h-5 w-5" />} title="Instagram" value="@sanjosebasket" href="https://instagram.com/sanjosebasket" />
+            <ContactCard icon={<Mail className="h-5 w-5" />} title="Email" value="ramiromartinez3596@gmail.com" href="mailto:ramiromartinez3596@gmail.com" />
+            <ContactCard icon={<Phone className="h-5 w-5" />} title="Teléfono" value="(261) 7114984" href="https://api.whatsapp.com/send?phone=5492617114984" />
+            <ContactCard icon={<MapPin className="h-5 w-5" />} title="Ubicación" value="San José, Mendoza, AR" href="https://maps.app.goo.gl/BEwfZmqRqJUWbhEv7" />
+            <ContactCard icon={<Instagram className="h-5 w-5" />} title="Instagram" value="@sanjosebasket" href="https://www.instagram.com/udsjbasquet?igsh=MWg0YXhtOWI1MWFqMw==" />
           </div>
 
           {/* Mini horarios */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-4 shadow">
-            <p className="text-sm text-slate-400">Horarios de atención</p>
+          <div className="rounded-2xl border border-[#E6EEF2] bg-[#FFFFFF] p-4 shadow">
+            <p className="text-sm">Horarios de atención</p>
             <ul className="mt-2 grid grid-cols-2 gap-2 text-sm">
-              <li className="text-slate-300">Lun–Vie</li>
-              <li className="text-right text-slate-400">09:00–13:00 / 16:00–20:00</li>
-              <li className="text-slate-300">Sábados</li>
-              <li className="text-right text-slate-400">10:00–13:00</li>
+              <li>Lun–Vie</li>
+              <li className="text-right">09:00–13:00 / 16:00–20:00</li>
+              <li>Sábados</li>
+              <li className="text-right">10:00–13:00</li>
             </ul>
           </div>
         </motion.div>
@@ -62,33 +93,50 @@ export default function Contacto() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className=""
         >
-          <div className="rounded-3xl border border-slate-800/80 bg-slate-900/50 p-4 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
-            <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
+          <div className="rounded-3xl border border-[#E6EEF2] bg-[#FFFFFF] p-4 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+            <form onSubmit={onSubmit} className="space-y-3">
               <Field label="Nombre y apellido">
-                <input className={inputStyle} placeholder="Tu nombre" required />
+                <input
+                    name="Nombre"
+                    className="w-full rounded-xl border border-[#E6EEF2] bg-[#FFFFFF] px-4 py-3 text-[#27303F] placeholder:text-[#27303F] focus:border-[#00AEEF] focus:outline-none focus:ring-2 focus:ring-[#00AEEF]/30 transition"
+                    placeholder="Tu nombre" required />
               </Field>
 
               <Field label="Email">
-                <input type="email" className={inputStyle} placeholder="tu@email.com" required />
+                <input
+                    type="email" name="Email"
+                    className="w-full rounded-xl border border-[#E6EEF2] bg-[#FFFFFF] px-4 py-3 text-[#27303F] placeholder:text-[#27303F] focus:border-[#00AEEF] focus:outline-none focus:ring-2 focus:ring-[#00AEEF]/30 transition"
+                    placeholder="tu@email.com" required />
               </Field>
 
               <Field label="Mensaje">
-                <textarea className={`${inputStyle} min-h-[200px] resize-y`} placeholder="Contanos en qué podemos ayudarte" required />
+                <textarea
+                    name="Mensaje"
+                    className="w-full rounded-xl border border-[#E6EEF2] bg-[#FFFFFF] px-4 py-3 text-[#27303F] placeholder:text-[#27303F] focus:border-[#00AEEF] focus:outline-none focus:ring-2 focus:ring-[#00AEEF]/30 transition min-h-[200px] resize-y"
+                    placeholder="Contanos en qué podemos ayudarte" required />
               </Field>
 
               <button
                 type="submit"
-                className="group flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-700 bg-white/95 px-5 py-3 font-medium text-slate-900 transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+                disabled={status === "sending"}
+                className="group flex w-full items-center justify-center gap-2 rounded-2xl border border-[#008ECF] bg-[#00AEEF] px-5 py-3 font-medium text-white transition hover:bg-[#008ECF] disabled:opacity-70 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]/40"
               >
-                Enviar
+                {status === "sending" ? "Enviando..." : "Enviar"}
                 <Send className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </button>
 
-              <p className="text-center text-xs text-slate-500">
-                Al enviar aceptás nuestra política de privacidad.
-              </p>
+              {/* Estado */}
+              {status === "ok" && (
+                <p className="flex items-center gap-2 text-sm text-green-600">
+                  <CheckCircle2 className="h-4 w-4" /> {msg}
+                </p>
+              )}
+              {status === "err" && (
+                <p className="flex items-center gap-2 text-sm text-red-600">
+                  <AlertCircle className="h-4 w-4" /> {msg}
+                </p>
+              )}
             </form>
           </div>
         </motion.div>
@@ -101,14 +149,11 @@ export default function Contacto() {
 function Field({ label, children }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-xs uppercase tracking-wide text-slate-400">{label}</span>
+      <span className="mb-1 block text-xs uppercase tracking-wide text-[#27303F]">{label}</span>
       {children}
     </label>
   );
 }
-
-const inputStyle =
-  "w-full rounded-xl border border-slate-700/80 bg-slate-900/60 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:border-emerald-400/60 focus:outline-none focus:ring-2 focus:ring-emerald-400/30 transition";
 
 function ContactCard({ icon, title, value, href }) {
   return (
@@ -116,18 +161,18 @@ function ContactCard({ icon, title, value, href }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="group flex items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-900/40 p-4 shadow transition hover:border-slate-700 hover:bg-slate-900/60"
+      className="group flex items-center justify-between gap-4 rounded-2xl border border-[#E6EEF2] bg-[#FFFFFF] p-4 shadow transition hover:border-[#006C9E] hover:bg-[#CBE9F7]"
     >
       <div className="flex items-center gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-xl border border-slate-800 bg-slate-900/70">
+        <div className="grid h-10 w-10 place-items-center rounded-xl border border-[#E6EEF2] bg-[#F9FAFB] text-[#006C9E]">
           {icon}
         </div>
         <div>
-          <p className="text-xs text-slate-400">{title}</p>
-          <p className="text-sm text-slate-200">{value}</p>
+          <p className="text-xs text-[#27303F]">{title}</p>
+          <p className="text-sm text-[#27303F]">{value}</p>
         </div>
       </div>
-      <ArrowUpRight className="h-5 w-5 opacity-60 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
+      <ArrowUpRight className="h-5 w-5 opacity-60 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100 text-[#006C9E]" />
     </a>
   );
 }

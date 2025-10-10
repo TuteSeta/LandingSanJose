@@ -18,18 +18,18 @@ export default function FooterContacto() {
 
         {/* Contact quick cards */}
         <div className="space-y-3">
-          <ContactItem icon={<Mail className="h-4 w-4" />} label="Email" href="mailto:contacto@sanjosebasket.com" value="contacto@sanjosebasket.com" />
-          <ContactItem icon={<Phone className="h-4 w-4" />} label="Teléfono" href="tel:+542615550198" value="(261) 555-0198" />
-          <ContactItem icon={<MapPin className="h-4 w-4" />} label="Ubicación" href="https://maps.google.com/?q=Gimnasio+San+Jose+Mendoza" value="Gimnasio San José, Mendoza, AR" />
+          <ContactItem icon={<Mail className="h-4 w-4" />} label="Email" href="mailto:ramiromartinez3596@gmail.com" value="ramiromartinez3596@gmail.com" />
+          <ContactItem icon={<Phone className="h-4 w-4" />} label="Teléfono" href="https://api.whatsapp.com/send?phone=5492617114984" value="(261) 7114984" />
+          <ContactItem icon={<MapPin className="h-4 w-4" />} label="Ubicación" href="https://maps.app.goo.gl/BEwfZmqRqJUWbhEv7" value="San José, Mendoza, AR" />
         </div>
 
         {/* Social & CTA */}
         <div className="flex flex-col items-start gap-4 md:items-end">
           <div className="flex items-center gap-3">
-            <SocialLink href="https://facebook.com/sanjosebasket" label="Facebook del club">
+            <SocialLink href="https://www.facebook.com/profile.php?id=61579710961060&rdid=tJ2xxYwz3L8BlpDP#" label="Facebook del club">
               <Facebook className="h-5 w-5" />
             </SocialLink>
-            <SocialLink href="https://instagram.com/sanjosebasket" label="Instagram del club">
+            <SocialLink href="https://www.instagram.com/udsjbasquet?igsh=MWg0YXhtOWI1MWFqMw==" label="Instagram del club">
               <Instagram className="h-5 w-5" />
             </SocialLink>
           </div>
