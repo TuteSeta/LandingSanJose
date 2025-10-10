@@ -104,24 +104,24 @@ export default function Plantel() {
   }, []);
 
   return (
-    <section className="relative w-full bg-[#0b1222] text-slate-200 overflow-hidden">
-      <div className="pointer-events-none absolute -top-40 left-1/2 h-[56rem] w-[56rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,0.18),rgba(34,197,94,0.12)_40%,transparent_70%)] blur-3xl" />
+    <section className="relative w-full bg-transparent text-[#27303F] overflow-hidden">
+      <div className="pointer-events-none fixed -top-60 left-1/2 h-[100rem] w-[100rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(0,174,239,0.20),rgba(0,43,91,0.10)_45%,transparent_75%)] blur-3xl" />
       <div className="absolute inset-x-0 top-10 flex justify-center select-none opacity-5">
-        <h1 className="text-[12rem] font-extrabold tracking-widest leading-none">PLANTEL</h1>
+        <h1 className="text-[12rem] font-extrabold tracking-widest leading-none text-[#002B5B]">PLANTEL</h1>
       </div>
 
       <div className="relative mx-auto w-full max-w-6xl px-6 pt-16 pb-10 md:px-10">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .5 }} className="mb-8">
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/40 px-3 py-1 text-sm shadow">
-            <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#E6EEF2] bg-[#FFFFFF] px-3 py-1 text-sm shadow">
+            <span className="inline-block h-2 w-2 rounded-full bg-[#00AEEF]" />
             Plantel temporada 24/25
           </div>
-          <h2 className="mt-3 text-4xl font-semibold tracking-tight">{titulo}</h2>
-          <p className="mt-2 max-w-2xl text-slate-400">Jugadoras del Club de Basket <span className="font-medium text-slate-200">San José</span>.</p>
+          <h2 className="mt-3 text-4xl font-semibold tracking-tight text-[#002B5B]">{titulo}</h2>
+          <p className="mt-2 max-w-2xl text-[#27303F]">Jugadoras del Club de Basket <span className="font-medium text-[#006C9E]">San José</span>.</p>
         </motion.div>
 
-        {loading && <p className="text-slate-400">Cargando plantel…</p>}
-        {error && <p className="text-red-400">{error}</p>}
+        {loading && <p className="text-[#27303F]">Cargando plantel…</p>}
+        {error && <p className="text-red-500">{error}</p>}
 
         {!loading && !error && (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -140,7 +140,7 @@ export default function Plantel() {
 /* =============== Card =============== */
 function PlayerCard({ nombre, posicion, rol, dorsal, imagen_url }) {
   return (
-    <div className="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/40 shadow transition hover:border-slate-700 hover:bg-slate-900/60">
+    <div className="group overflow-hidden rounded-2xl border border-[#E6EEF2] bg-[#FFFFFF] shadow transition hover:border-[#006C9E] hover:bg-[#CBE9F7]">
       <div className="relative aspect-[3/4] w-full">
         {imagen_url ? (
           <Image
@@ -161,21 +161,21 @@ function PlayerCard({ nombre, posicion, rol, dorsal, imagen_url }) {
         <div
           data-placeholder
           hidden={Boolean(imagen_url)}
-          className="absolute inset-0 grid place-items-center bg-slate-900/40 text-slate-500 text-sm"
+          className="absolute inset-0 grid place-items-center bg-[#CBE9F7] text-[#006C9E] text-sm"
         >
           Sin foto
         </div>
 
-        <div className="absolute left-3 top-3 rounded-xl border border-slate-800/80 bg-slate-900/70 px-2 py-1 text-xs font-semibold text-slate-200 backdrop-blur">
+        <div className="absolute left-3 top-3 rounded-xl border border-[#E6EEF2] bg-[#F9FAFB] px-2 py-1 text-xs font-semibold text-[#27303F] backdrop-blur">
           #{Number.isFinite(dorsal) && dorsal !== 0 ? dorsal : '—'}
         </div>
       </div>
 
       <div className="flex items-start justify-between gap-3 p-4">
         <div>
-          <h3 className="text-base font-semibold leading-tight text-slate-100">{nombre || '—'}</h3>
-          <p className="text-xs text-slate-400">{posicion || '—'}</p>
-          {rol && <p className="mt-1 text-xs text-slate-500">{rol}</p>}
+          <h3 className="text-base font-semibold leading-tight text-[#27303F]">{nombre || '—'}</h3>
+          <p className="text-xs text-[#27303F]">{posicion || '—'}</p>
+          {rol && <p className="mt-1 text-xs text-[#006C9E]">{rol}</p>}
         </div>
       </div>
     </div>
