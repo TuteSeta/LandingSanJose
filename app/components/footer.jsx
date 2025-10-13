@@ -1,4 +1,3 @@
-// app/components/FooterContacto.jsx
 import { Mail, Phone, MapPin, Facebook, Instagram, ArrowUpRight } from "lucide-react";
 
 export default function FooterContacto() {
