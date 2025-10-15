@@ -1,19 +1,114 @@
 @import "tailwindcss";
 
+/* ====== Tokens base (marca San José) ====== */
 :root {
+  --azul-sanjo:    #151C47;
+  --naranja-sanjo: #F38020;
+  --blanco:        #FFFFFF;
+  --negro:         #000000;
+  --gris-oscuro:   #272727;
+
+  /* Semánticas (Light) */
   --background: #ffffff;
   --foreground: #171717;
+  --surface:    #f7f7f9;
+  --border:     #e9e9ef;
+  --muted:      #5e5e5e;
+
+  --brand:      var(--azul-sanjo);
+  --accent:     var(--naranja-sanjo);
+
+  --btn-bg:        var(--accent);
+  --btn-fg:        var(--blanco);
+  --btn-hover-bg:  var(--brand);
+  --btn-hover-fg:  var(--blanco);
 }
 
+/* ====== Tema oscuro por preferencia o clase ====== */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0b0f1c;
+    --foreground: #e9ecf2;
+    --surface:    #151C47;
+    --border:     #1e2745;
+    --muted:      #a7b0c5;
+
+    --btn-hover-bg: #ff8e36;
   }
 }
 
-body {
+.theme-dark {
+  --background: #151C47;
+  --foreground: #e9ecf2;
+  --surface:    #151C47;
+  --border:     #1e2745;
+  --muted:      #151C47;
+
+  --btn-hover-bg: #ff8e36;
+}
+
+/* ====== Base ====== */
+html, body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ====== Utilidades rápidas (opcionales) ====== */
+.bg-app      { background-color: var(--background); }
+.text-app    { color: var(--foreground); }
+.bg-surface  { background-color: var(--surface); }
+.border-app  { border-color: var(--border); }
+.text-muted  { color: var(--muted); }
+.text-brand  { color: var(--brand); }
+.text-accent { color: var(--accent); }
+.bg-brand    { background-color: var(--brand); }
+.bg-accent   { background-color: var(--accent); }
+
+/* ====== Botones según la guía ====== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  transition: transform 0.08s ease, background-color 0.2s ease, color 0.2s ease;
+}
+.btn:hover {
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-fg);
+  transform: translateY(-1px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Botón secundario (outline) */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+  border: 1px solid var(--brand);
+  color: var(--brand);
+  background: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.08s ease;
+}
+.btn-outline:hover {
+  background: color-mix(in srgb, var(--brand) 10%, transparent);
+  transform: translateY(-1px);
+}
+
+/* Footer institucional */
+.footer-institucional {
+  background: var(--brand);
+  color: var(--blanco);
 }
