@@ -1,5 +1,5 @@
-import NavBar from "../../components/hero/NavBar.jsx";
-import NAV_ITEMS from "../../components/hero/navItems.js";
+import NavBar from "../../components/ui/NavBar.jsx";
+import NAV_ITEMS from "../../components/ui/navItems.js";
 import NewsPortal from "../../components/noticias/NewsPortal.jsx";
 import Noticias from "../../components/noticias/NewsPortal.jsx";
 export default function Home() {

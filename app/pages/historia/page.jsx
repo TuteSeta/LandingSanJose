@@ -1,6 +1,6 @@
 import Plantel from "../../components/plantel/plantel.jsx";
-import NavBar from "../../components/hero/NavBar.jsx";
-import NAV_ITEMS from "../../components/hero/navItems.js";
+import NavBar from "../../components/ui/NavBar.jsx";
+import NAV_ITEMS from "../../components/ui/navItems.js";
 
 export default function Home() {
   return (
