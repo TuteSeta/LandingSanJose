@@ -12,29 +12,41 @@ export default async function NewsPortal() {
     const raw = await fs.readFile(filePath, "utf8");
     data = JSON.parse(raw);
   } catch {
-    // no hacer nada, queda el default
+    // default vacío
   }
 
   return (
     <section
-      className="relative isolate min-h-[100svh] w-full
-                 bg-gradient-to-br from-[#FFFFFF] via-[#CBE9F7] to-[#E6EEF2]"
+      className={[
+        "relative isolate min-h-[100svh] w-full",
+        // Fondo: gradiente suave con tokens
+        "bg-[radial-gradient(120%_120%_at_10%_0%,color-mix(in_srgb,var(--blanco)_100%,transparent)_0%,",
+        "color-mix(in_srgb,var(--celeste-sanjo)_18%,transparent)_45%,",
+        "color-mix(in_srgb,var(--brand)_8%,transparent)_100%)]"
+      ].join(" ")}
     >
-      {/* velo sutil */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-white/30" />
+      {/* velo sutil para levantar blancos sin perder contraste */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[color-mix(in_srgb,var(--blanco)_70%,transparent)]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-14 md:py-16">
         <header className="mb-8 md:mb-10 text-center">
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight text-[#002B5B]">
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight text-brand">
             Noticias del Club
           </h1>
-          <p className="mt-3 text-lg md:text-xl text-[#006C9E]">
+          <p className="mt-3 text-lg md:text-xl text-celeste">
             Lo último de La Liga Femenina — San José (Mendoza)
           </p>
 
           {data?.fetchedAt && (
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1.5 text-sm font-medium text-[#27303F] ring-1 ring-[#E6EEF2] backdrop-blur">
-              <span className="inline-block h-2 w-2 rounded-full bg-[#00AEEF]" />
+            <div
+              className={[
+                "mt-4 inline-flex items-center gap-2 rounded-full",
+                "px-4 py-1.5 text-sm font-medium",
+                "bg-[color-mix(in_srgb,var(--blanco)_80%,transparent)]",
+                "text-app ring-1 ring-[var(--border)] backdrop-blur"
+              ].join(" ")}
+            >
+              <span className="inline-block h-2 w-2 rounded-full bg-[var(--celeste-sanjo)]" />
               Actualizado: {new Date(data.fetchedAt).toLocaleString()}
             </div>
           )}

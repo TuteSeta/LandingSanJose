@@ -102,12 +102,14 @@ export default function Plantel() {
   }, []);
 
   return (
-    <section className="relative w-full bg-transparent text-[#27303F] overflow-hidden">
-      {/* glow sutil (oculto en mobile para evitar ruido visual) */}
-      <div className="pointer-events-none fixed -top-60 left-1/2 h-[80rem] w-[80rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(0,174,239,0.16),rgba(0,43,91,0.08)_45%,transparent_75%)] blur-3xl hidden md:block" />
+    <section className="relative w-full bg-transparent text-app overflow-hidden">
+      {/* glow sutil (oculto en mobile) */}
+      <div className="pointer-events-none fixed -top-60 left-1/2 h-[80rem] w-[80rem] -translate-x-1/2 rounded-full hidden md:block blur-3xl
+        bg-[radial-gradient(ellipse_at_center,color-mix(in_srgb,var(--celeste-sanjo)_16%,transparent),color-mix(in_srgb,var(--brand)_8%,transparent)_45%,transparent_75%)]" />
+
       {/* marca de agua grande, oculta en mobile */}
       <div className="absolute inset-x-0 top-10 hidden md:flex justify-center select-none opacity-5">
-        <h1 className="text-[10rem] font-extrabold tracking-widest leading-none text-[#002B5B]">PLANTEL</h1>
+        <h1 className="text-[10rem] font-extrabold tracking-widest leading-none text-brand">PLANTEL</h1>
       </div>
 
       <div className="relative mx-auto w-full max-w-6xl px-4 pt-10 pb-8 sm:px-6 md:px-10 md:pt-16 md:pb-10">
@@ -117,20 +119,22 @@ export default function Plantel() {
           transition={{ duration: .5 }}
           className="mb-5 md:mb-8"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#E6EEF2] bg-white px-2.5 py-0.5 text-xs shadow md:px-3 md:py-1 md:text-sm">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#00AEEF]" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-app bg-[var(--blanco)] px-2.5 py-0.5 text-xs shadow md:px-3 md:py-1 md:text-sm">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--celeste-sanjo)]" />
             Plantel temporada 24/25
           </div>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[#002B5B] md:mt-3 md:text-4xl">
+
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-brand md:mt-3 md:text-4xl">
             {titulo}
           </h2>
-          <p className="mt-1 max-w-2xl text-sm text-[#27303F] md:text-base">
-            Jugadoras del Club de Basket <span className="font-medium text-[#006C9E]">San José</span>.
+
+          <p className="mt-1 max-w-2xl text-sm text-app md:text-base">
+            Jugadoras del Club de Basket <span className="font-medium text-celeste">San José</span>.
           </p>
         </motion.div>
 
-        {loading && <p className="text-sm md:text-base text-[#27303F]">Cargando plantel…</p>}
-        {error && <p className="text-sm md:text-base text-red-500">{error}</p>}
+        {loading && <p className="text-sm md:text-base text-app">Cargando plantel…</p>}
+        {error && <p className="text-sm md:text-base text-brand">{error}</p>}
 
         {!loading && !error && (
           <div
@@ -161,15 +165,20 @@ export default function Plantel() {
 
 /* =============== Card =============== */
 function PlayerCard({ nombre, posicion, rol, dorsal, imagen_url }) {
+  const HOVER_BG = 'hover:bg-[color-mix(in_srgb,var(--celeste-sanjo)_18%,transparent)]';
+  const PLACEHOLDER_BG = 'bg-[color-mix(in_srgb,var(--celeste-sanjo)_20%,var(--blanco))]';
+
   return (
     <div
-      className="
-        group overflow-hidden rounded-xl
-        border border-[#E6EEF2] bg-white
-        shadow-sm md:shadow
-        transition
-        hover:border-[#006C9E] hover:bg-[#CBE9F7]
-      "
+      className={[
+        "group overflow-hidden rounded-xl",
+        "border border-app bg-[var(--blanco)]",
+        "shadow-sm md:shadow",
+        // 👇 transiciones suaves (1s) + crecimiento leve
+        "transform-gpu will-change-transform transition-all duration-1000 ease-out",
+        "hover:border-[var(--brand)]", HOVER_BG,
+        "md:hover:scale-[1.03] hover:shadow-lg"
+      ].join(" ")}
     >
       <div className="relative aspect-[7/10] w-full">
         {imagen_url ? (
@@ -180,7 +189,8 @@ function PlayerCard({ nombre, posicion, rol, dorsal, imagen_url }) {
             sizes="(max-width: 480px) 45vw, (max-width: 768px) 30vw, (max-width: 1024px) 22vw, 18vw"
             className="
               object-cover object-center
-              md:transition-transform md:duration-300 md:group-hover:scale-[1.03]
+              md:transition-transform md:duration-1000 md:ease-out
+              md:group-hover:scale-[1.05]
             "
             onError={(e) => {
               const el = e.currentTarget;
@@ -194,7 +204,7 @@ function PlayerCard({ nombre, posicion, rol, dorsal, imagen_url }) {
         <div
           data-placeholder
           hidden={Boolean(imagen_url)}
-          className="absolute inset-0 grid place-items-center bg-[#CBE9F7] text-[#006C9E] text-xs"
+          className={`absolute inset-0 grid place-items-center ${PLACEHOLDER_BG} text-brand text-xs`}
         >
           Sin foto
         </div>
@@ -202,8 +212,8 @@ function PlayerCard({ nombre, posicion, rol, dorsal, imagen_url }) {
         <div
           className="
             absolute left-2 top-2 rounded-lg
-            border border-[#E6EEF2] bg-[#F9FAFB]
-            px-1.5 py-0.5 text-[10px] font-semibold text-[#27303F]
+            border border-app bg-[var(--surface)]
+            px-1.5 py-0.5 text-[10px] font-semibold text-app
             backdrop-blur
             md:left-3 md:top-3 md:px-2 md:py-1 md:text-xs
           "
@@ -214,17 +224,12 @@ function PlayerCard({ nombre, posicion, rol, dorsal, imagen_url }) {
 
       <div className="flex items-start justify-between gap-2 p-3 md:gap-3 md:p-4">
         <div>
-          <h3 className="text-sm md:text-base font-semibold leading-tight text-[#27303F] line-clamp-1">
+          <h3 className="text-sm md:text-base font-semibold leading-tight text-app line-clamp-1">
             {nombre || '—'}
           </h3>
-          <p className="text-[11px] md:text-xs text-[#27303F] line-clamp-1">
+          <p className="mt-0.5 md:mt-1 text-[11px] md:text-xs text-brand line-clamp-1">
             {posicion || '—'}
           </p>
-          {rol && (
-            <p className="mt-0.5 md:mt-1 text-[11px] md:text-xs text-[#006C9E] line-clamp-1">
-              {rol}
-            </p>
-          )}
         </div>
       </div>
     </div>

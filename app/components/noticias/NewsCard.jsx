@@ -17,44 +17,74 @@ export default function NewsCard({ item }) {
 
   return (
     <article
-      className="group relative overflow-hidden rounded-2xl border border-[#E6EEF2]
-                 bg-white/80 shadow-sm ring-1 ring-transparent transition
-                 hover:-translate-y-0.5 hover:shadow-md hover:ring-[#CBE9F7] backdrop-blur"
+      className={[
+        // 🧱 igualar alturas
+        "h-full flex flex-col",
+        // 🎨 base
+        "group relative overflow-hidden rounded-2xl border border-app",
+        "bg-[color-mix(in_srgb,var(--blanco)_80%,transparent)] backdrop-blur",
+        "shadow-sm ring-1 ring-transparent",
+        // 🪄 hover: agranda + celeste suave
+        "transform-gpu will-change-transform transition-all duration-500 ease-out",
+        "hover:scale-[1.02] hover:shadow-md",
+        "hover:bg-[color-mix(in_srgb,var(--celeste-sanjo)_14%,var(--blanco))]",
+        "hover:ring-[color-mix(in_srgb,var(--celeste-sanjo)_35%,transparent)], cursor-pointer"
+      ].join(" ")}
     >
       {/* Imagen / placeholder */}
-      <div className="relative">
+      <div className="relative h-48 w-full">
         {item.img ? (
           <>
             {!loaded && (
-              <div className="absolute inset-0 animate-pulse rounded-t-2xl bg-[#E6EEF2]" />
+              <div className="absolute inset-0 animate-pulse rounded-t-2xl bg-[var(--surface)]" />
             )}
             <img
               src={item.img}
               alt={item.title ?? "Noticia"}
-              className={`h-48 w-full object-cover transition-opacity ${
-                loaded ? "opacity-100" : "opacity-0"
-              }`}
+              className={[
+                "h-48 w-full object-cover",
+                "transition-opacity duration-300",
+                loaded ? "opacity-100" : "opacity-0",
+                // acompaña el scale del contenedor en hover
+                "md:transition-transform md:duration-500 md:ease-out md:group-hover:scale-[1.03]"
+              ].join(" ")}
               onLoad={() => setLoaded(true)}
               loading="lazy"
             />
           </>
         ) : (
-          <div className="flex h-48 w-full items-center justify-center bg-gradient-to-br from-[#CBE9F7] to-[#E6EEF2]">
+          <div
+            className="
+              flex h-48 w-full items-center justify-center
+              bg-[linear-gradient(to_br,
+                color-mix(in_srgb,var(--celeste-sanjo)_55%,transparent),
+                color-mix(in_srgb,var(--brand)_12%,transparent)
+              )]
+            "
+          >
             <span className="text-5xl">📰</span>
           </div>
         )}
 
         {/* Overlay degradado sutil */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/25 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+        <div
+          className="
+            pointer-events-none absolute inset-x-0 bottom-0 h-20
+            bg-gradient-to-t
+            from-[color-mix(in_srgb,var(--negro)_25%,transparent)]
+            to-transparent
+            opacity-0 transition-opacity duration-300 group-hover:opacity-100
+          "
+        />
       </div>
 
-      {/* Contenido */}
-      <div className="p-4">
+      {/* Contenido (crece para igualar alturas) */}
+      <div className="flex flex-col p-4 flex-1">
         <a
           href={item.href}
           target="_blank"
           rel="noopener"
-          className="block text-lg font-semibold leading-snug text-[#0b1020] hover:underline"
+          className="block text-lg font-semibold leading-snug text-app hover:text-brand no-underline"
         >
           {item.title}
         </a>
@@ -62,17 +92,24 @@ export default function NewsCard({ item }) {
         {/* Meta */}
         <div className="mt-2 flex flex-wrap items-center gap-2">
           {item.date && (
-            <span className="rounded-full bg-[#E6EEF2] px-2.5 py-1 text-xs font-medium text-[#27303F]">
+            <span className="rounded-full bg-[var(--surface)] px-2.5 py-1 text-xs font-medium text-app border border-app">
               {formatDateHuman(item.date)}
             </span>
           )}
-          <span className="rounded-full bg-[#00AEEF]/10 px-2.5 py-1 text-xs font-semibold text-[#007FB6] ring-1 ring-[#00AEEF]/20">
+          <span
+            className="
+              rounded-full px-2.5 py-1 text-xs font-semibold
+              text-brand
+              ring-1 ring-[color-mix(in_srgb,var(--celeste-sanjo)_30%,transparent)]
+              bg-[color-mix(in_srgb,var(--celeste-sanjo)_12%,transparent)]
+            "
+          >
             Fuente: La Liga Femenina
           </span>
         </div>
 
         {item.excerpt && (
-          <p className="mt-3 line-clamp-3 text-sm text-[#27303F]/80">
+          <p className="mt-3 line-clamp-3 text-sm text-muted">
             {item.excerpt}
           </p>
         )}

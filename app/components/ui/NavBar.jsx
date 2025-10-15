@@ -12,37 +12,42 @@ export default function NavBar({
   const [path, setPath] = useState("/");
   const [openMobile, setOpenMobile] = useState(false);
 
-  // Path actual
   useEffect(() => {
     if (typeof window !== "undefined") setPath(window.location.pathname || "/");
   }, []);
 
-  // Cierra el menú al cambiar de ruta
   useEffect(() => {
     setOpenMobile(false);
   }, [path]);
 
   const handleEnter = (idx) => onHoverStart?.(idx);
   const handleLeave = () => onHoverEnd?.();
-
   const isPathActive = (href) => path === href || path.startsWith(href + "/");
+
+  const NO_UNDERLINE =
+    "no-underline decoration-transparent hover:no-underline focus:no-underline active:no-underline visited:no-underline";
+
+  const ACTIVE_BG =
+    "bg-[color-mix(in_srgb,var(--celeste-sanjo)_18%,transparent)]";
+  const HOVER_BG =
+    "hover:bg-[color-mix(in_srgb,var(--celeste-sanjo)_15%,transparent)]";
 
   return (
     <nav
       role="navigation"
-      className="sticky top-0 z-30 bg-white border-b border-[#E6EEF2] shadow-sm"
+      className="sticky top-0 z-30 bg-app border-b border-app shadow-sm"
       onMouseLeave={handleLeave}
     >
       {/* Top bar */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 group">
+        <Link href="/" className={`flex items-center gap-3 group ${NO_UNDERLINE}`}>
           <img
             src="/img/escudoClub.png"
             alt="Escudo Club San José"
             className="h-10 w-10 md:h-12 md:w-12 drop-shadow-sm transition-transform group-hover:scale-105"
           />
-          <span className="text-xl md:text-3xl font-extrabold tracking-tight text-[#002B5B]">
-            San <span className="text-[#00AEEF]">José</span>
+          <span className="text-xl md:text-3xl font-extrabold tracking-tight text-brand">
+            San <span className="text-celeste">José</span>
           </span>
         </Link>
 
@@ -61,10 +66,12 @@ export default function NavBar({
                   className={[
                     "relative inline-flex items-center rounded-xl px-3 py-2",
                     "transition-transform duration-200 ease-out will-change-transform",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]",
+                    NO_UNDERLINE,
+                    "text-app",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--celeste-sanjo)]",
                     styledActive
-                      ? "bg-[#CBE9F7] text-[#006C9E] shadow-[0_2px_10px_rgba(0,174,239,0.15)] scale-110"
-                      : "text-[#27303F] hover:text-[#006C9E] hover:bg-[#CBE9F7] hover:scale-[1.08]"
+                      ? `${ACTIVE_BG} text-brand scale-110`
+                      : `hover:text-brand ${HOVER_BG} hover:scale-[1.08]`
                   ].join(" ")}
                   onMouseEnter={() => handleEnter(idx)}
                   onMouseLeave={handleLeave}
@@ -81,7 +88,7 @@ export default function NavBar({
         {/* Mobile: hamburger */}
         <button
           type="button"
-          className="md:hidden inline-flex items-center justify-center rounded-lg p-2 ring-1 ring-black/10 hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]"
+          className="md:hidden inline-flex items-center justify-center rounded-lg p-2 ring-1 ring-[color-mix(in_srgb,var(--negro)_10%,transparent)] hover:bg-[color-mix(in_srgb,var(--negro)_5%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--celeste-sanjo)]"
           aria-label="Abrir menú"
           aria-controls="mobile-menu"
           aria-expanded={openMobile}
@@ -111,20 +118,19 @@ export default function NavBar({
         </button>
       </div>
 
-      {/* Mobile: panel desplegable */}
-      {/* Overlay para cerrar tocando fuera */}
+      {/* Mobile: panel */}
       {openMobile && (
         <button
           aria-hidden="true"
           tabIndex={-1}
           onClick={() => setOpenMobile(false)}
-          className="md:hidden fixed inset-0 z-[29] bg-black/20"
+          className="md:hidden fixed inset-0 z-[29] bg-[color-mix(in_srgb,var(--negro)_20%,transparent)]"
         />
       )}
       <div
         id="mobile-menu"
         className={[
-          "md:hidden relative z-[30] bg-white border-t border-[#E6EEF2] overflow-hidden",
+          "md:hidden relative z-[30] bg-app border-t border-app overflow-hidden",
           "transition-[max-height] duration-300 ease-out",
           openMobile ? "max-h-[70vh]" : "max-h-0"
         ].join(" ")}
@@ -142,10 +148,12 @@ export default function NavBar({
                   aria-current={routeActive ? "page" : undefined}
                   className={[
                     "flex w-full items-center justify-between rounded-xl px-3 py-3 text-base font-semibold",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]",
+                    NO_UNDERLINE,
+                    "text-app",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--celeste-sanjo)]",
                     styledActive
-                      ? "bg-[#CBE9F7] text-[#006C9E] shadow-sm"
-                      : "text-[#27303F] hover:text-[#006C9E] hover:bg-[#F3F8FB]"
+                      ? `${ACTIVE_BG} text-brand`
+                      : `hover:text-brand ${HOVER_BG}`
                   ].join(" ")}
                   onClick={() => setOpenMobile(false)}
                   onMouseEnter={() => handleEnter(idx)}
@@ -154,9 +162,8 @@ export default function NavBar({
                   onBlur={handleLeave}
                 >
                   <span>{label}</span>
-                  {/* indicador activo */}
                   {styledActive && (
-                    <span className="ml-3 inline-flex h-2 w-2 rounded-full bg-[#00AEEF]" />
+                    <span className="ml-3 inline-flex h-2 w-2 rounded-full bg-[var(--celeste-sanjo)]" />
                   )}
                 </Link>
               </li>
