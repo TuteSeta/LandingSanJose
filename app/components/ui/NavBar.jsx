@@ -37,7 +37,7 @@ export default function NavBar({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
           <img
-            src="/escudoClub.png"
+            src="/img/escudoClub.png"
             alt="Escudo Club San José"
             className="h-10 w-10 md:h-12 md:w-12 drop-shadow-sm transition-transform group-hover:scale-105"
           />

@@ -28,7 +28,6 @@ function parseGVizText(txt) {
 
 /* =============== Normalizador de filas =============== */
 function normalizeRow(rawIn) {
-  // normalizo claves
   const o = {};
   for (const k of Object.keys(rawIn)) o[normalizeKey(k)] = rawIn[k];
 
@@ -38,7 +37,6 @@ function normalizeRow(rawIn) {
   const dorsal   = Number(pickFirst(o, ['dorsal','nro','numero','#']) || 0);
   const activo   = /^(true|1)$/i.test(String(pickFirst(o, ['activo','active']) || ''));
 
-  // columna de URL directa (i.ibb.co / i.postimg.cc / etc.)
   const imagen_url = pickFirst(o, [
     'imagen_url','imagen','image','foto','photo','url','link',
     'imagenurl','imageurl','fotourl','foto_url','image_url'
@@ -105,28 +103,52 @@ export default function Plantel() {
 
   return (
     <section className="relative w-full bg-transparent text-[#27303F] overflow-hidden">
-      <div className="pointer-events-none fixed -top-60 left-1/2 h-[100rem] w-[100rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(0,174,239,0.20),rgba(0,43,91,0.10)_45%,transparent_75%)] blur-3xl" />
-      <div className="absolute inset-x-0 top-10 flex justify-center select-none opacity-5">
-        <h1 className="text-[12rem] font-extrabold tracking-widest leading-none text-[#002B5B]">PLANTEL</h1>
+      {/* glow sutil (oculto en mobile para evitar ruido visual) */}
+      <div className="pointer-events-none fixed -top-60 left-1/2 h-[80rem] w-[80rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(0,174,239,0.16),rgba(0,43,91,0.08)_45%,transparent_75%)] blur-3xl hidden md:block" />
+      {/* marca de agua grande, oculta en mobile */}
+      <div className="absolute inset-x-0 top-10 hidden md:flex justify-center select-none opacity-5">
+        <h1 className="text-[10rem] font-extrabold tracking-widest leading-none text-[#002B5B]">PLANTEL</h1>
       </div>
 
-      <div className="relative mx-auto w-full max-w-6xl px-6 pt-16 pb-10 md:px-10">
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .5 }} className="mb-8">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#E6EEF2] bg-[#FFFFFF] px-3 py-1 text-sm shadow">
-            <span className="inline-block h-2 w-2 rounded-full bg-[#00AEEF]" />
+      <div className="relative mx-auto w-full max-w-6xl px-4 pt-10 pb-8 sm:px-6 md:px-10 md:pt-16 md:pb-10">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: .5 }}
+          className="mb-5 md:mb-8"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#E6EEF2] bg-white px-2.5 py-0.5 text-xs shadow md:px-3 md:py-1 md:text-sm">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#00AEEF]" />
             Plantel temporada 24/25
           </div>
-          <h2 className="mt-3 text-4xl font-semibold tracking-tight text-[#002B5B]">{titulo}</h2>
-          <p className="mt-2 max-w-2xl text-[#27303F]">Jugadoras del Club de Basket <span className="font-medium text-[#006C9E]">San José</span>.</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[#002B5B] md:mt-3 md:text-4xl">
+            {titulo}
+          </h2>
+          <p className="mt-1 max-w-2xl text-sm text-[#27303F] md:text-base">
+            Jugadoras del Club de Basket <span className="font-medium text-[#006C9E]">San José</span>.
+          </p>
         </motion.div>
 
-        {loading && <p className="text-[#27303F]">Cargando plantel…</p>}
-        {error && <p className="text-red-500">{error}</p>}
+        {loading && <p className="text-sm md:text-base text-[#27303F]">Cargando plantel…</p>}
+        {error && <p className="text-sm md:text-base text-red-500">{error}</p>}
 
         {!loading && !error && (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div
+            className="
+              grid
+              grid-cols-2 gap-3
+              sm:gap-4
+              md:grid-cols-3 md:gap-6
+              lg:grid-cols-4
+            "
+          >
             {jugadoras.map((p, idx) => (
-              <motion.div key={p.id || idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: idx * 0.04 }}>
+              <motion.div
+                key={p.id || idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: idx * 0.03 }}
+              >
                 <PlayerCard {...p} />
               </motion.div>
             ))}
@@ -140,18 +162,29 @@ export default function Plantel() {
 /* =============== Card =============== */
 function PlayerCard({ nombre, posicion, rol, dorsal, imagen_url }) {
   return (
-    <div className="group overflow-hidden rounded-2xl border border-[#E6EEF2] bg-[#FFFFFF] shadow transition hover:border-[#006C9E] hover:bg-[#CBE9F7]">
-      <div className="relative aspect-[3/4] w-full">
+    <div
+      className="
+        group overflow-hidden rounded-xl
+        border border-[#E6EEF2] bg-white
+        shadow-sm md:shadow
+        transition
+        hover:border-[#006C9E] hover:bg-[#CBE9F7]
+      "
+    >
+      <div className="relative aspect-[7/10] w-full">
         {imagen_url ? (
           <Image
             src={imagen_url}
             alt={nombre || 'Jugador/a'}
             fill
-            sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 25vw"
-            className="object-cover object-center transition-transform duration-300 group-hover:scale-[1.03]"
+            sizes="(max-width: 480px) 45vw, (max-width: 768px) 30vw, (max-width: 1024px) 22vw, 18vw"
+            className="
+              object-cover object-center
+              md:transition-transform md:duration-300 md:group-hover:scale-[1.03]
+            "
             onError={(e) => {
               const el = e.currentTarget;
-              // @ts-ignore - next/image no expone style, pero funciona
+              // @ts-ignore
               el.style.display = 'none';
               el.parentElement?.querySelector('[data-placeholder]')?.removeAttribute('hidden');
             }}
@@ -161,21 +194,37 @@ function PlayerCard({ nombre, posicion, rol, dorsal, imagen_url }) {
         <div
           data-placeholder
           hidden={Boolean(imagen_url)}
-          className="absolute inset-0 grid place-items-center bg-[#CBE9F7] text-[#006C9E] text-sm"
+          className="absolute inset-0 grid place-items-center bg-[#CBE9F7] text-[#006C9E] text-xs"
         >
           Sin foto
         </div>
 
-        <div className="absolute left-3 top-3 rounded-xl border border-[#E6EEF2] bg-[#F9FAFB] px-2 py-1 text-xs font-semibold text-[#27303F] backdrop-blur">
+        <div
+          className="
+            absolute left-2 top-2 rounded-lg
+            border border-[#E6EEF2] bg-[#F9FAFB]
+            px-1.5 py-0.5 text-[10px] font-semibold text-[#27303F]
+            backdrop-blur
+            md:left-3 md:top-3 md:px-2 md:py-1 md:text-xs
+          "
+        >
           #{Number.isFinite(dorsal) && dorsal !== 0 ? dorsal : '—'}
         </div>
       </div>
 
-      <div className="flex items-start justify-between gap-3 p-4">
+      <div className="flex items-start justify-between gap-2 p-3 md:gap-3 md:p-4">
         <div>
-          <h3 className="text-base font-semibold leading-tight text-[#27303F]">{nombre || '—'}</h3>
-          <p className="text-xs text-[#27303F]">{posicion || '—'}</p>
-          {rol && <p className="mt-1 text-xs text-[#006C9E]">{rol}</p>}
+          <h3 className="text-sm md:text-base font-semibold leading-tight text-[#27303F] line-clamp-1">
+            {nombre || '—'}
+          </h3>
+          <p className="text-[11px] md:text-xs text-[#27303F] line-clamp-1">
+            {posicion || '—'}
+          </p>
+          {rol && (
+            <p className="mt-0.5 md:mt-1 text-[11px] md:text-xs text-[#006C9E] line-clamp-1">
+              {rol}
+            </p>
+          )}
         </div>
       </div>
     </div>

@@ -1,15 +1,12 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
-import Footer from "./components/footer";
+import Footer from "./components/ui/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Fuente Montserrat (Google)
+const montserrat = Montserrat({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-montserrat",
+  display: "swap",
 });
 
 export const metadata = {
@@ -19,12 +16,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="es" className={montserrat.variable}>
+      <head>
+        {/* Fuente Humane desde CDNFonts */}
+        <link
+          href="https://fonts.cdnfonts.com/css/humane"
+          rel="stylesheet"
+        />
+        <meta name="color-scheme" content="light" />
+      </head>
+      <body className="antialiased">
         {children}
-        <Footer/>
+        <Footer />
       </body>
     </html>
   );

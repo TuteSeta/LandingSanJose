@@ -1,72 +1,78 @@
 @import "tailwindcss";
 
-/* ====== Tokens base (marca San José) ====== */
+/* ===========================
+   Tokens (modo único - claro)
+   =========================== */
 :root {
-  --azul-sanjo:    #151C47;
-  --naranja-sanjo: #F38020;
-  --blanco:        #FFFFFF;
-  --negro:         #000000;
-  --gris-oscuro:   #272727;
+  /* Marca */
+  --azul-sanjo:   #151C47;  /* azul institucional oscuro */
+  --celeste-sanjo:#4fcaf7;  /* celeste vibrante de acento */
+  --blanco:       #ffffff;
+  --negro:        #000000;
 
-  /* Semánticas (Light) */
-  --background: #ffffff;
-  --foreground: #171717;
-  --surface:    #f7f7f9;
-  --border:     #e9e9ef;
-  --muted:      #5e5e5e;
+  /* Semánticas */
+  --background: #ffffff;   /* fondo app */
+  --foreground: #111111;   /* texto principal */
+  --surface:    #f5f6fa;   /* tarjetas/sections */
+  --border:     #e6e9ef;   /* bordes suaves */
+  --muted:      #666a72;   /* texto secundario */
 
-  --brand:      var(--azul-sanjo);
-  --accent:     var(--naranja-sanjo);
+  /* Marca */
+  --brand:  var(--azul-sanjo);
+  --accent: var(--negro); /* acentos discretos */
 
-  --btn-bg:        var(--accent);
-  --btn-fg:        var(--blanco);
-  --btn-hover-bg:  var(--brand);
-  --btn-hover-fg:  var(--blanco);
+  /* Botones */
+  --btn-bg:       var(--brand);
+  --btn-fg:       var(--blanco);
+  --btn-hover-bg: #0f1433; /* azul más profundo */
+  --btn-hover-fg: var(--blanco);
+  
+  /* Fuentes */
+  --font-humane: "Humane", sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
 }
 
-/* ====== Tema oscuro por preferencia o clase ====== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0b0f1c;
-    --foreground: #e9ecf2;
-    --surface:    #151C47;
-    --border:     #1e2745;
-    --muted:      #a7b0c5;
-
-    --btn-hover-bg: #ff8e36;
-  }
+/* ===========================
+   Hard-disable dark modes UA
+   =========================== */
+html {
+  color-scheme: light;
+  forced-color-adjust: none;
 }
 
-.theme-dark {
-  --background: #151C47;
-  --foreground: #e9ecf2;
-  --surface:    #151C47;
-  --border:     #1e2745;
-  --muted:      #151C47;
-
-  --btn-hover-bg: #ff8e36;
-}
-
-/* ====== Base ====== */
 html, body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ====== Utilidades rápidas (opcionales) ====== */
+/* ========== Utilidades ========== */
 .bg-app      { background-color: var(--background); }
 .text-app    { color: var(--foreground); }
 .bg-surface  { background-color: var(--surface); }
 .border-app  { border-color: var(--border); }
 .text-muted  { color: var(--muted); }
+
 .text-brand  { color: var(--brand); }
-.text-accent { color: var(--accent); }
 .bg-brand    { background-color: var(--brand); }
+.text-accent { color: var(--accent); }
 .bg-accent   { background-color: var(--accent); }
 
-/* ====== Botones según la guía ====== */
+/* Nuevo: celeste institucional */
+.text-celeste { color: var(--celeste-sanjo); }
+.bg-celeste   { background-color: var(--celeste-sanjo); }
+
+/* Links */
+a {
+  color: var(--brand);
+  text-underline-offset: 3px;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ===========================
+   Botones (sin naranja)
+   =========================== */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -77,18 +83,22 @@ html, body {
   font-weight: 700;
   background: var(--btn-bg);
   color: var(--btn-fg);
-  transition: transform 0.08s ease, background-color 0.2s ease, color 0.2s ease;
+  border: 1px solid transparent;
+  transition: transform 0.08s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 .btn:hover {
   background: var(--btn-hover-bg);
   color: var(--btn-hover-fg);
   transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(21,28,71,0.18);
 }
-.btn:active {
-  transform: translateY(0);
+.btn:active { transform: translateY(0); }
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(21,28,71,0.3);
 }
 
-/* Botón secundario (outline) */
+/* Secundario (outline) */
 .btn-outline {
   display: inline-flex;
   align-items: center;
@@ -100,15 +110,60 @@ html, body {
   border: 1px solid var(--brand);
   color: var(--brand);
   background: transparent;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.08s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.08s ease, box-shadow 0.2s ease;
 }
 .btn-outline:hover {
   background: color-mix(in srgb, var(--brand) 10%, transparent);
   transform: translateY(-1px);
 }
+.btn-outline:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(21,28,71,0.3);
+}
 
-/* Footer institucional */
+/* ===========================
+   Footer institucional (azul)
+   =========================== */
 .footer-institucional {
   background: var(--brand);
   color: var(--blanco);
+}
+
+/* ===========================
+   Componentes base sugeridos
+   =========================== */
+.header {
+  background: var(--blanco);
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-weight: 600;
+  padding: .25rem .5rem;
+  border-radius: 999px;
+  background: var(--negro);
+  color: var(--blanco);
+}
+
+/* Mejora de legibilidad para Humane */
+h1, h2, .title {
+  font-family: var(--font-humane);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+/* Texto general con Montserrat */
+body, p, a, button, input, span {
+  font-family: var(--font-montserrat);
 }
