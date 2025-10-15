@@ -4,30 +4,36 @@ import { useEffect, useState } from "react";
 
 export default function NavBar({
   items = [],
-  interactive = false,   
-  activeIndex = 0,       
+  interactive = false,
+  activeIndex = 0,
   onHoverStart,
   onHoverEnd,
 }) {
   const [path, setPath] = useState("/");
+  const [openMobile, setOpenMobile] = useState(false);
 
+  // Path actual
   useEffect(() => {
     if (typeof window !== "undefined") setPath(window.location.pathname || "/");
   }, []);
 
+  // Cierra el menú al cambiar de ruta
+  useEffect(() => {
+    setOpenMobile(false);
+  }, [path]);
+
   const handleEnter = (idx) => onHoverStart?.(idx);
   const handleLeave = () => onHoverEnd?.();
 
-  const isPathActive = (href) => {
-    return path === href || path.startsWith(href + "/");
-  };
+  const isPathActive = (href) => path === href || path.startsWith(href + "/");
 
   return (
     <nav
       role="navigation"
-      className="sticky top-0 z-30 supports-[backdrop-filter]:bg-white/80 backdrop-blur-md border-b border-[#E6EEF2] shadow-sm"
+      className="sticky top-0 z-30 bg-white border-b border-[#E6EEF2] shadow-sm"
       onMouseLeave={handleLeave}
     >
+      {/* Top bar */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
           <img
@@ -71,40 +77,87 @@ export default function NavBar({
             );
           })}
         </ul>
+
+        {/* Mobile: hamburger */}
+        <button
+          type="button"
+          className="md:hidden inline-flex items-center justify-center rounded-lg p-2 ring-1 ring-black/10 hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]"
+          aria-label="Abrir menú"
+          aria-controls="mobile-menu"
+          aria-expanded={openMobile}
+          onClick={() => setOpenMobile((v) => !v)}
+        >
+          {/* Icono hamburguesa / close */}
+          <svg
+            className={`h-6 w-6 ${openMobile ? "hidden" : "block"}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg
+            className={`h-6 w-6 ${openMobile ? "block" : "hidden"}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
+            <path d="M6 6l12 12M18 6l-12 12" />
+          </svg>
+        </button>
       </div>
 
-      {/* Mobile pills */}
-      <div className="md:hidden bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/55">
-        <ul
-          className={[
-            "mx-auto max-w-7xl px-3 py-2 flex gap-2 overflow-x-auto snap-x",
-            "[&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
-          ].join(" ")}
-        >
+      {/* Mobile: panel desplegable */}
+      {/* Overlay para cerrar tocando fuera */}
+      {openMobile && (
+        <button
+          aria-hidden="true"
+          tabIndex={-1}
+          onClick={() => setOpenMobile(false)}
+          className="md:hidden fixed inset-0 z-[29] bg-black/20"
+        />
+      )}
+      <div
+        id="mobile-menu"
+        className={[
+          "md:hidden relative z-[30] bg-white border-t border-[#E6EEF2] overflow-hidden",
+          "transition-[max-height] duration-300 ease-out",
+          openMobile ? "max-h-[70vh]" : "max-h-0"
+        ].join(" ")}
+      >
+        <ul className="px-4 py-3 flex flex-col gap-1">
           {items.map(({ label, href }, idx) => {
             const routeActive = isPathActive(href);
             const carouselActive = interactive && idx === activeIndex;
             const styledActive = interactive ? carouselActive : routeActive;
 
             return (
-              <li key={label} className="snap-start shrink-0">
+              <li key={label}>
                 <Link
                   href={href}
                   aria-current={routeActive ? "page" : undefined}
                   className={[
-                    "inline-flex items-center rounded-2xl px-4 py-2.5 text-[15px] font-semibold",
-                    "transition-transform duration-200 ease-out will-change-transform",
-                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]",
+                    "flex w-full items-center justify-between rounded-xl px-3 py-3 text-base font-semibold",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00AEEF]",
                     styledActive
-                      ? "bg-gradient-to-br from-[#CBE9F7] to-[#B5E2F8] text-[#005b87] shadow-md scale-105"
-                      : "bg-white/80 text-[#0f2940] ring-1 ring-black/5 shadow-sm hover:scale-[1.04] hover:bg-white"
+                      ? "bg-[#CBE9F7] text-[#006C9E] shadow-sm"
+                      : "text-[#27303F] hover:text-[#006C9E] hover:bg-[#F3F8FB]"
                   ].join(" ")}
+                  onClick={() => setOpenMobile(false)}
                   onMouseEnter={() => handleEnter(idx)}
                   onMouseLeave={handleLeave}
                   onFocus={() => handleEnter(idx)}
                   onBlur={handleLeave}
                 >
-                  {label}
+                  <span>{label}</span>
+                  {/* indicador activo */}
+                  {styledActive && (
+                    <span className="ml-3 inline-flex h-2 w-2 rounded-full bg-[#00AEEF]" />
+                  )}
                 </Link>
               </li>
             );
